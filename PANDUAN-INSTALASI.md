@@ -36,5 +36,7 @@ git push -u origin main
 ## D. Performa & kuota
 Daftar media di-cache 10 menit (otomatis dibuang saat admin mengubah). Log dikumpulkan di cache dan ditulis per 10 entri atau tiap 5 menit lewat trigger (`flushLog`).
 
-## E. Belum termasuk versi ini
-Wizard Reset Akhir Tahun (5 langkah), kelola/impor data siswa, grafik interaktif, ekspor Excel/PDF, dan pengaturan portal dari dashboard. Tinggal diminta sebagai tahap berikutnya.
+## E. Fitur v1.1
+Dashboard, Kelola Media (filter, aksi massal, halaman edit dengan live preview), Log Aktivitas (unduh Excel, cetak PDF), Statistik (grafik tren & donat), Data Siswa (impor Excel/CSV 3 langkah), Semester & Ajaran (wizard reset 5 langkah), Pengaturan Portal.
+**Penting:** setelah mengganti Kode.gs, buat **New version** pada Manage deployments. Wizard reset: jalankan Langkah 1 (cadangan) lebih dulu, uji dulu di salinan Spreadsheet.
+**Mode contoh:** selama `GAS_URL` belum diisi, panel admin tampil dengan data contoh (tidak menyimpan apa pun).

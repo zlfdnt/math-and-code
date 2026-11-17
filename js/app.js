@@ -59,36 +59,15 @@ function ensureMe(force) {
 }
 function log(jenis, m) { if (!LIVE || !S.me) return; post('log', { ...S.me, jenis, id: m?.id, nm: m?.nama }).catch(() => {}); }
 
-// ===== Admin =====
-const A = { media: [] };
+// ===== Admin (modul terpisah: js/admin.js) =====
 function admin() {
   const v = $('#adminView'); $('#student').hidden = true; v.hidden = false;
-  if (!LIVE) { v.innerHTML = '<h2>Panel Guru</h2><p>Isi GAS_URL di js/config.js terlebih dahulu.</p><a class="btn" href="#">Kembali</a>'; return; }
-  if (!S.tok) { v.innerHTML = `<h2>Login Guru</h2><form class="f panel" id="lg" style="max-width:380px"><label>Kata sandi admin<input type="password" name="s" autocomplete="off" required></label><button class="btn glow">Masuk</button><a href="#">← Beranda siswa</a></form>`;
+  const ctx = { LIVE, post, toast, modal: h => { $('#sheet').innerHTML = h; $('#modal').hidden = false; }, close: () => $('#modal').hidden = true, logout: () => { S.tok = ''; sessionStorage.removeItem('mch_tok'); location.hash = ''; } };
+  if (LIVE && !S.tok) { document.body.classList.remove('is-admin'); v.innerHTML = `<div class="login"><h2>Login Guru</h2><form class="f panel" id="lg"><label>Kata sandi admin<input type="password" name="s" autocomplete="off" required></label><button class="btn glow">Masuk</button><a href="#">← Beranda siswa</a></form></div>`;
     $('#lg').onsubmit = async e => { e.preventDefault(); const j = await post('admin.login', { sandi: e.target.s.value }); if (j.success) { S.tok = j.token; sessionStorage.mch_tok = j.token; admin(); } else toast(j.message); }; return; }
-  v.innerHTML = `<h2>Panel Admin</h2><div class="tabs">${['media', 'log', 'stat', 'periode'].map(t => `<button class="chip" data-t="${t}">${{ media: 'Kelola Media', log: 'Log Aktivitas', stat: 'Statistik', periode: 'Semester' }[t]}</button>`).join('')}<button class="chip" id="out">Keluar</button></div><div id="tab"></div>`;
-  $$('[data-t]', v).forEach(b => b.onclick = () => tab(b.dataset.t)); $('#out').onclick = () => { S.tok = ''; sessionStorage.removeItem('mch_tok'); location.hash = ''; }; tab('media');
+  window.MCH_ADMIN.open(ctx);
 }
-async function tab(t) {
-  const el = $('#tab'); $$('[data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === t)); el.innerHTML = '<p class="muted">Memuat…</p>';
-  if (t === 'media') { const j = await post('admin.media'); if (!j.success) return; A.media = j.data.media; A.set = j.data.setting;
-    el.innerHTML = `<button class="btn glow" id="add">+ Tambah Media</button><div style="overflow:auto;margin-top:12px"><table><tr><th>Media</th><th>Kls</th><th>Mapel</th><th>Periode</th><th>Status</th><th></th></tr>${A.media.map(m => `<tr><td>${esc(m.nama)}</td><td>${m.kelas}</td><td>${esc(m.mapel)}</td><td>${esc(m.ta)} ${esc(m.sem)}</td><td><select data-st="${esc(m.id)}">${['Terbuka', 'Arsip (Hanya Admin)', 'Nonaktif'].map(s => `<option ${s === m.status ? 'selected' : ''}>${s}</option>`).join('')}</select></td><td><button class="chip" data-ed="${esc(m.id)}">Edit</button></td></tr>`).join('')}</table></div>`;
-    $('#add').onclick = () => form({ ta: A.set.tahun_ajaran, sem: A.set.semester, status: 'Terbuka', kelas: 7, mapel: 'Matematika' });
-    $$('[data-ed]').forEach(b => b.onclick = () => form(A.media.find(m => m.id === b.dataset.ed)));
-    $$('[data-st]').forEach(s => s.onchange = async () => { const r = await post('admin.mediaStatus', { id: s.dataset.st, status: s.value }); toast(r.success ? 'Status diubah' : r.message); }); }
-  if (t === 'log') { const j = await post('admin.logs'); if (!j.success) return; el.innerHTML = `<p class="muted">${j.data.total} entri (200 terbaru)</p><div style="overflow:auto"><table><tr><th>Waktu</th><th>Nama</th><th>Kls</th><th>Aktivitas</th><th>Media</th></tr>${j.data.logs.map(l => `<tr><td>${new Date(l.timestamp).toLocaleString('id-ID')}</td><td>${esc(l.nama)}</td><td>${l.kelas}</td><td>${esc(l.jenis)}</td><td>${esc(l.nama_media)}</td></tr>`).join('')}</table></div><button class="btn ghost" id="csv" style="margin-top:12px">Unduh CSV</button>`;
-    $('#csv').onclick = () => { const c = 'Waktu,Nama,Kelas,Aktivitas,Media\n' + j.data.logs.map(l => [l.timestamp, l.nama, l.kelas, l.jenis, l.nama_media].map(x => `"${String(x).replace(/"/g, '""')}"`).join(',')).join('\n'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' })); a.download = 'log-aktivitas.csv'; a.click(); }; }
-  if (t === 'stat') { const j = await post('admin.stats'); if (!j.success) return; const d = j.data, bars = (a, mx) => a.map(([k, v]) => `<div>${esc(k)} — <b>${v}</b></div><div class="bar" style="width:${Math.max(4, v / (mx || 1) * 100)}%"></div>`).join('');
-    el.innerHTML = `<div class="panel"><h3>Media paling sering dibuka</h3>${bars(d.top, d.top[0]?.[1]) || '–'}</div><div class="panel"><h3>Akses per kelas</h3>${bars(Object.entries(d.kelas).map(([k, v]) => ['Kelas ' + k, v]), Math.max(...Object.values(d.kelas)))}</div><div class="panel"><h3>Tren harian (14 hari)</h3>${bars(d.hari, Math.max(1, ...d.hari.map(x => x[1])))}</div>`; }
-  if (t === 'periode') el.innerHTML = `<div class="panel f" style="max-width:420px"><h3>Pindah Semester</h3><p class="muted">Media semester lama tetap terbuka. Cadangan otomatis dibuat di Drive.</p><select id="sm"><option>Ganjil</option><option>Genap</option></select><input id="kf" placeholder='Ketik GANTI untuk konfirmasi'><button class="btn" id="go">Terapkan</button></div>`,
-    $('#go').onclick = async () => { const r = await post('admin.semester', { semester: $('#sm').value, konfirmasi: $('#kf').value }); toast(r.message || 'OK'); };
-}
-function form(m) {
-  const f = (k, l, t = 'text') => `<label>${l}<input name="${k}" type="${t}" value="${esc(m[k] ?? '')}"></label>`;
-  $('#sheet').innerHTML = `<button class="btn ghost x" data-close>✕</button><h2>${m.id ? 'Edit' : 'Tambah'} Media</h2><form class="f" id="mf">${f('nama', 'Nama media')}<label>Deskripsi<textarea name="deskripsi" rows="2">${esc(m.deskripsi || '')}</textarea></label>${f('url', 'URL tautan (https://…)')}<label>Petunjuk login siswa<textarea name="petunjuk" rows="3">${esc(m.petunjuk || '')}</textarea></label>${f('gambar', 'Gambar (URL dipisah koma, boleh lebih dari satu)')}<label>Kelas<select name="kelas">${[7, 8, 9].map(k => `<option ${k == m.kelas ? 'selected' : ''}>${k}</option>`).join('')}</select></label><label>Mapel<select name="mapel">${['Matematika', 'Koding & KA'].map(k => `<option ${k === m.mapel ? 'selected' : ''}>${k}</option>`).join('')}</select></label>${f('topik', 'Topik')}${f('ta', 'Tahun ajaran')}<label>Semester<select name="sem">${['Ganjil', 'Genap'].map(k => `<option ${k === m.sem ? 'selected' : ''}>${k}</option>`).join('')}</select></label><button class="btn glow">Simpan</button></form>`; $('#modal').hidden = false;
-  $('#mf').onsubmit = async e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.target)); d.id = m.id; d.status = m.status; d.urutan = m.urutan; const r = await post('admin.mediaSave', d); toast(r.success ? 'Tersimpan' : r.message); if (r.success) { $('#modal').hidden = true; tab('media'); } };
-}
-function route() { if (location.hash === '#admin') admin(); else { $('#adminView').hidden = true; $('#student').hidden = false; } }
+function route() { if (location.hash.startsWith('#admin')) admin(); else { window.MCH_ADMIN?.leave(); $('#adminView').hidden = true; $('#adminView').innerHTML = ''; $('#student').hidden = false; } }
 addEventListener('hashchange', route);
 
 // ===== Kursor lup hidup =====
