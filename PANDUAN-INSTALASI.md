@@ -40,3 +40,8 @@ Daftar media di-cache 10 menit (otomatis dibuang saat admin mengubah). Log dikum
 Dashboard, Kelola Media (filter, aksi massal, halaman edit dengan live preview), Log Aktivitas (unduh Excel, cetak PDF), Statistik (grafik tren & donat), Data Siswa (impor Excel/CSV 3 langkah), Semester & Ajaran (wizard reset 5 langkah), Pengaturan Portal.
 **Penting:** setelah mengganti Kode.gs, buat **New version** pada Manage deployments. Wizard reset: jalankan Langkah 1 (cadangan) lebih dulu, uji dulu di salinan Spreadsheet.
 **Mode contoh:** selama `GAS_URL` belum diisi, panel admin tampil dengan data contoh (tidak menyimpan apa pun).
+
+## F. Pembaruan v1.2
+- **Unggah gambar thumbnail langsung** di halaman Edit Media (tombol "Unggah Gambar", bisa banyak file; otomatis dikecilkan lalu disimpan di folder Drive "📂 Gambar"). Setelah mengganti Kode.gs: **Deploy → Manage deployments → New version**, lalu izinkan ulang akses jika diminta. Bila akun Google Workspace sekolah memblokir berbagi publik, gambar tidak tampil di siswa; gunakan URL gambar dari tempat lain.
+- **Credit** Zulfa Dianti, S.Pd., M.Pd., Gr. di bagian paling bawah portal siswa.
+- **Tampilan portal siswa** diperbarui; **kursor** diganti "+" kecil dengan efek partikel (nonaktif otomatis di layar sentuh dan bila pengguna memilih *reduce motion*).

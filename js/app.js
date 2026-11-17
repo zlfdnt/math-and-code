@@ -25,14 +25,16 @@ async function boot() {
   if (d.setting.sambutan) $('#sambutan').textContent = d.setting.sambutan; $('#periode').textContent = `Tahun Ajaran ${d.setting.tahun_ajaran} · Semester ${d.setting.semester}`;
   if (d.setting.kontak_wa) $('#kontak').innerHTML = `Butuh bantuan? <a href="https://wa.me/${esc(d.setting.kontak_wa)}" target="_blank" rel="noopener">WhatsApp Guru</a>`;
   $('#heroSlides').outerHTML = slides(['img/maskot.jpg', 'img/math.jpg', 'img/ai.jpg', 'img/sains.jpg']).replace('class="slides"', 'class="slides hero-img" id="heroSlides"');
-  $('#grades').innerHTML = [7, 8, 9].map(k => `<button class="g g${k}" data-k="${k}">Kelas ${k}<small>${S.media.filter(m => m.kelas == k).length} media</small></button>`).join('');
+  const GI = { 7: ['📚', 'Fondasi Berhitung', 'Bilangan, bentuk, logika dasar & Scratch'], 8: ['📐', 'Aljabar & Python', 'Fungsi, persamaan linear & logika cabang'], 9: ['🤖', 'AI & Geometri Lanjut', 'Transformasi, statistika & kecerdasan artifisial'] };
+  $('#grades').innerHTML = [7, 8, 9].map(k => `<button class="g g${k} rv" style="--d:${(k - 7) * 100}ms" data-k="${k}"><span class="gi">${GI[k][0]}</span><b>Kelas ${k}</b><em>${GI[k][1]}</em><small>${GI[k][2]}</small><span class="gc">${S.media.filter(m => m.kelas == k).length} media aktif →</span></button>`).join('');
+  const cn = f => S.media.filter(f).length; $('#hs1').dataset.n = S.media.length; $('#hs2').dataset.n = cn(m => m.mapel === 'Matematika'); $('#hs3').dataset.n = cn(m => m.mapel !== 'Matematika'); window.MCH_UI?.count($('#hstats'));
   const pers = [...new Set([S.per, ...S.media.map(m => `${m.ta}|${m.sem}`)])]; $('#per').innerHTML = pers.map(p => `<option value="${esc(p)}" ${p === S.per ? 'selected' : ''}>${esc(p.replace('|', ' · Sem. '))}</option>`).join('');
   $('#mapel').innerHTML = ['', 'Matematika', 'Koding & KA'].map(m => `<button class="chip ${m ? '' : 'on'}" data-m="${esc(m)}">${m || 'Semua'}</button>`).join('');
   render(); ensureMe(false); log('laman');
 }
 function render() {
   const q = S.q.toLowerCase(), l = S.media.filter(m => (!S.kelas || m.kelas == S.kelas) && (!S.mapel || m.mapel === S.mapel) && `${m.ta}|${m.sem}` === S.per && (`${m.nama} ${m.deskripsi} ${m.topik}`).toLowerCase().includes(q));
-  $('#grid').innerHTML = l.length ? l.map(m => `<article class="card" data-id="${esc(m.id)}"><div class="inner"><div class="face front">${slides(imgs(m))}<div class="body"><span class="badge p${m.kelas}">Kelas ${m.kelas} · ${esc(m.mapel)}</span><h3>${esc(m.nama)}</h3><p>${esc(m.deskripsi)}</p><div class="row"><a class="btn glow" href="${esc(m.url)}" target="_blank" rel="noopener" data-open>Buka Media</a><button class="btn ghost" data-flip>Cara Login</button><button class="btn ghost" data-det>Detail</button></div></div></div><div class="face back"><h4>🔑 Cara Login</h4><div class="guide-t">${esc(m.petunjuk || 'Tidak perlu login — langsung buka media.')}</div><button class="btn" data-flip>Kembali</button></div></div></article>`).join('') : '<p class="muted">Belum ada media untuk pilihan ini.</p>';
+  $('#grid').innerHTML = l.length ? l.map((m, i) => `<article class="card rv" style="--d:${i * 70}ms" data-id="${esc(m.id)}"><div class="inner"><div class="face front">${slides(imgs(m))}<div class="body"><span class="badge p${m.kelas}">Kelas ${m.kelas} · ${esc(m.mapel)}</span><h3>${esc(m.nama)}</h3><p>${esc(m.deskripsi)}</p><div class="row"><a class="btn glow" href="${esc(m.url)}" target="_blank" rel="noopener" data-open>Buka Media</a><button class="btn ghost" data-flip>Cara Login</button><button class="btn ghost" data-det>Detail</button></div></div></div><div class="face back"><h4>🔑 Cara Login</h4><div class="guide-t">${esc(m.petunjuk || 'Tidak perlu login — langsung buka media.')}</div><button class="btn" data-flip>Kembali</button></div></div></article>`).join('') : '<p class="muted">Belum ada media untuk pilihan ini.</p>';
 }
 function findM(el) { return S.media.find(m => m.id === el.closest('.card')?.dataset.id); }
 document.addEventListener('click', async e => {
@@ -69,18 +71,6 @@ function admin() {
 }
 function route() { if (location.hash.startsWith('#admin')) admin(); else { window.MCH_ADMIN?.leave(); $('#adminView').hidden = true; $('#adminView').innerHTML = ''; $('#student').hidden = false; } }
 addEventListener('hashchange', route);
-
-// ===== Kursor lup hidup =====
-const L = $('#loupe');
-if (matchMedia('(pointer:fine)').matches) {
-  let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y, ang = 0;
-  addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; L.style.opacity = 1; L.classList.toggle('big', !!e.target.closest('a,button,select,input,.card,.g')); });
-  addEventListener('pointerdown', () => L.classList.add('click')); addEventListener('pointerup', () => L.classList.remove('click'));
-  document.addEventListener('mouseleave', () => L.style.opacity = 0);
-  const pp = $$('.pp', L); (function f() { const vx = (tx - x) * .16, vy = (ty - y) * .16; x += vx; y += vy; ang += (Math.max(-30, Math.min(30, vx * 2)) - ang) * .2;
-    L.style.transform = `translate(${x + 12}px,${y + 12}px) rotate(${ang}deg)`;
-    const dx = Math.max(-2.5, Math.min(2.5, (tx - x) / 10)), dy = Math.max(-2.5, Math.min(2.5, (ty - y) / 10)); pp.forEach(p => p.style.transform = `translate(${dx}px,${dy}px)`); requestAnimationFrame(f); })();
-} else L.remove();
 
 route(); boot();
 })();
