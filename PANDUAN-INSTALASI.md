@@ -54,3 +54,11 @@ Dashboard, Kelola Media (filter, aksi massal, halaman edit dengan live preview),
 
 ## H. Pembaruan v1.4 — Ikon website
 Ikon Σ bergradasi indigo (senada logo header) dengan percikan "+" kuning. Berkas: `favicon.svg`, `favicon.ico`, `icon-32.png`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`, `site.webmanifest` (semuanya di root, sejajar `index.html`). Ikon ini juga dipakai saat portal ditambahkan ke layar utama HP. Setelah push ke GitHub, tab lama mungkin masih menampilkan ikon lama: tutup tab atau tekan Ctrl+Shift+R.
+
+## I. Pembaruan v1.5
+- **Detail media** dirapikan: foto dengan tombol tutup di atas gambar dan panah geser, label kelas/mapel/periode/topik, deskripsi, langkah login bernomor, serta tombol **Buka Media** yang selalu terlihat di bawah (di HP tampil sebagai panel dari bawah). Layar di belakang tidak ikut ter-scroll.
+- **Header profil interaktif:** latar bergradasi bergerak, simbol matematika mengambang yang bergeser mengikuti kursor, cincin warna berputar di sekeliling foto (miring 3D mengikuti kursor), dan isi profil muncul bertahap.
+- **Zoom & posisi foto** di menu Profil Guru: geser agar wajah pas di lingkaran. Foto yang diunggah kini tidak dipotong otomatis. Foto lama Ibu tetap dipakai apa adanya.
+- **Footer minimalis:** lebar sejajar kolom halaman, tautan satu baris, credit berupa kartu pil yang bisa diklik untuk membuka profil.
+- Perubahan Kode.gs: hanya menambah tiga kunci pengaturan (`prof_zoom`, `prof_px`, `prof_py`). **Jangan** menjalankan ulang `setupAppEnvironment`; cukup tempel kode baru lalu **New version**.
+- **Paket pembaruan** (`…-update-v1.5.zip`) sengaja tidak memuat `js/config.js` agar URL backend Ibu tidak tertimpa.
