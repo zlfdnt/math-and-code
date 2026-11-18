@@ -62,3 +62,7 @@ Ikon Σ bergradasi indigo (senada logo header) dengan percikan "+" kuning. Berka
 - **Footer minimalis:** lebar sejajar kolom halaman, tautan satu baris, credit berupa kartu pil yang bisa diklik untuk membuka profil.
 - Perubahan Kode.gs: hanya menambah tiga kunci pengaturan (`prof_zoom`, `prof_px`, `prof_py`). **Jangan** menjalankan ulang `setupAppEnvironment`; cukup tempel kode baru lalu **New version**.
 - **Paket pembaruan** (`…-update-v1.5.zip`) sengaja tidak memuat `js/config.js` agar URL backend Ibu tidak tertimpa.
+
+## J. Pembaruan v1.6
+- **Pita topik berjalan tanpa putus:** jumlah salinan dihitung otomatis mengikuti lebar layar (termasuk monitor lebar) sehingga tidak pernah ada ruang kosong di ujungnya; dihitung ulang saat jendela diubah ukurannya.
+- **Footer seimbang:** sisi kanan (Hak Cipta) kini 3 baris dengan gaya yang sama dengan sisi kiri (credit).

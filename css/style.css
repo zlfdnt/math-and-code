@@ -218,3 +218,8 @@ html{background:#17163a}body.mo{overflow:hidden}
 .fbt .cp{font-size:12px;color:#8f8bd1;text-align:right;line-height:1.7}
 @media(max-width:700px){.sheet:has(.dt){max-height:94vh;border-radius:24px 24px 0 0}#modal:has(.dt){place-items:end center;padding:0}.dhero{height:34vh}.dbody{padding:18px 18px 6px}.dbody h2{font-size:23px;line-height:30px}.dfoot{padding:12px 18px;flex-direction:column-reverse}.dfoot .btn{width:100%}.snav{opacity:1}.fcr{border-radius:22px;width:100%}.fbt{flex-direction:column;align-items:flex-start}.fbt .cp{text-align:left}.ftop{flex-direction:column;gap:20px}.flinks{gap:18px}}
 .dbody{padding-bottom:20px}@media(min-width:701px){.fbt .cp{margin-right:58px}}
+
+/* v1.6 pita topik tanpa putus & footer seimbang */
+.mq div{gap:0!important}.mq .mp{margin-right:14px}
+.fbt .cp.fct{font-size:inherit;line-height:inherit;color:inherit;text-align:right}.fbt .cp.fct small{color:#8f8bd1}
+@media(max-width:700px){.fbt .cp.fct{text-align:left}}

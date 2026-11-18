@@ -27,5 +27,8 @@ document.addEventListener('pointerout', e => { const p = e.target.closest?.('.pf
 { const mo = $('#modal'); if (mo) new MutationObserver(() => document.body.classList.toggle('mo', !mo.hidden)).observe(mo, { attributes: true, attributeFilter: ['hidden'] }); }
 document.addEventListener('pointermove', e => { const g = e.target.closest?.('.g'); if (g) { const r = g.getBoundingClientRect(); g.style.setProperty('--gx', e.clientX - r.left + 'px'); g.style.setProperty('--gy', e.clientY - r.top + 'px'); } });
 addEventListener('keydown', e => { if (e.key === 'Escape') { const m = $('#modal'); if (m) m.hidden = true; } });
+{ const tr = $('.mq > div'); if (tr) { const base = tr.innerHTML; let lw = 0;
+  const build = () => { tr.style.animation = 'none'; tr.innerHTML = base; const w = tr.scrollWidth || 1, n = Math.max(1, Math.ceil(innerWidth * 1.25 / w)), set = base.repeat(n); tr.innerHTML = set + set; tr.style.animation = ''; tr.style.animationDuration = Math.max(24, w * n / 45) + 's'; lw = innerWidth; };
+  build(); document.fonts?.ready.then(build); let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (Math.abs(innerWidth - lw) > 40) build(); }, 250); }); } }
 window.MCH_UI = { PD, prof, ini, avatarImg, profileHTML, count(root) { $$('[data-n]', root).forEach(el => { const to = +el.dataset.n; let t0; const st = ts => { t0 = t0 || ts; const p = Math.min(1, (ts - t0) / 900); el.textContent = nf(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); }); } };
 })();
