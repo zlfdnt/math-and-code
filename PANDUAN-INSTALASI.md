@@ -51,3 +51,6 @@ Dashboard, Kelola Media (filter, aksi massal, halaman edit dengan live preview),
 - **Credit minimalis:** foto/inisial **ZD** di bagian paling bawah bisa diklik dan membuka popup profil singkat.
 - **Edit profil:** menu **Profil Guru** di panel admin (foto unggah langsung, nama, jabatan, profil singkat maks. 400 karakter, keahlian, WhatsApp, email, tautan) dengan pratinjau langsung. Kolom kosong memakai teks bawaan. Setelah mengganti Kode.gs, buat **New version** pada Manage deployments.
 - Isi profil (termasuk WhatsApp/email bila diisi) bersifat **publik**, sehingga tampil ke semua pengunjung portal.
+
+## H. Pembaruan v1.4 — Ikon website
+Ikon Σ bergradasi indigo (senada logo header) dengan percikan "+" kuning. Berkas: `favicon.svg`, `favicon.ico`, `icon-32.png`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`, `site.webmanifest` (semuanya di root, sejajar `index.html`). Ikon ini juga dipakai saat portal ditambahkan ke layar utama HP. Setelah push ke GitHub, tab lama mungkin masih menampilkan ikon lama: tutup tab atau tekan Ctrl+Shift+R.

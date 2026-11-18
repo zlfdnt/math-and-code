@@ -1,0 +1,13 @@
+{
+  "name": "Math & Code Hub — SMP Maitreyawira Bintan Center",
+  "short_name": "Math & Code Hub",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FAF9FF",
+  "theme_color": "#4838D1",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
