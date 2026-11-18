@@ -45,3 +45,9 @@ Dashboard, Kelola Media (filter, aksi massal, halaman edit dengan live preview),
 - **Unggah gambar thumbnail langsung** di halaman Edit Media (tombol "Unggah Gambar", bisa banyak file; otomatis dikecilkan lalu disimpan di folder Drive "📂 Gambar"). Setelah mengganti Kode.gs: **Deploy → Manage deployments → New version**, lalu izinkan ulang akses jika diminta. Bila akun Google Workspace sekolah memblokir berbagi publik, gambar tidak tampil di siswa; gunakan URL gambar dari tempat lain.
 - **Credit** Zulfa Dianti, S.Pd., M.Pd., Gr. di bagian paling bawah portal siswa.
 - **Tampilan portal siswa** diperbarui; **kursor** diganti "+" kecil dengan efek partikel (nonaktif otomatis di layar sentuh dan bila pengguna memilih *reduce motion*).
+
+## G. Pembaruan v1.3
+- **Portal siswa dirapikan:** kartu jenjang kelas, pita topik, bilah pencarian + filter (dengan jumlah media), kartu media, bagian "Kenapa", dan panduan 3 langkah kini sejajar dalam satu lebar kolom. Kartu media memuat label di atas gambar, tombol "Buka Media" penuh, serta "Cara Login" berupa langkah bernomor di sisi balik kartu.
+- **Credit minimalis:** foto/inisial **ZD** di bagian paling bawah bisa diklik dan membuka popup profil singkat.
+- **Edit profil:** menu **Profil Guru** di panel admin (foto unggah langsung, nama, jabatan, profil singkat maks. 400 karakter, keahlian, WhatsApp, email, tautan) dengan pratinjau langsung. Kolom kosong memakai teks bawaan. Setelah mengganti Kode.gs, buat **New version** pada Manage deployments.
+- Isi profil (termasuk WhatsApp/email bila diisi) bersifat **publik**, sehingga tampil ke semua pengunjung portal.
