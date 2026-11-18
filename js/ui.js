@@ -1,8 +1,8 @@
 (() => {
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)], nf = n => Number(n).toLocaleString('id-ID');
 const hdr = $('.top'), bar = $('#prog'), btt = $('#btt');
-const onS = () => { const y = scrollY, h = document.documentElement.scrollHeight - innerHeight; bar.style.width = (h > 0 ? y / h * 100 : 0) + '%'; hdr.classList.toggle('sm', y > 40); btt.classList.toggle('on', y > 600); };
-addEventListener('scroll', onS, { passive: true }); onS(); btt.onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+const onS = () => { const y = scrollY, h = document.documentElement.scrollHeight - innerHeight; bar.style.width = (h > 0 ? y / h * 100 : 0) + '%'; hdr.classList.toggle('sm', y > 40); btt.classList.toggle('on', y > 600); const fb = $('.fbt'); if (fb) btt.style.bottom = (18 + Math.max(0, innerHeight - fb.getBoundingClientRect().top)) + 'px'; };
+addEventListener('scroll', onS, { passive: true }); addEventListener('resize', onS); onS(); btt.onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
 $('#burger').onclick = () => hdr.classList.toggle('open'); hdr.addEventListener('click', e => { if (e.target.closest('nav a')) hdr.classList.remove('open'); });
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const t = e.target; t.classList.add('in'); io.unobserve(t); setTimeout(() => t.classList.remove('rv', 'in'), 1300); } }), { threshold: .12 });
 const scan = () => $$('.rv:not(.in)').forEach(el => { if (!el._o) { el._o = 1; io.observe(el); } }); scan(); new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });

@@ -66,3 +66,6 @@ Ikon Σ bergradasi indigo (senada logo header) dengan percikan "+" kuning. Berka
 ## J. Pembaruan v1.6
 - **Pita topik berjalan tanpa putus:** jumlah salinan dihitung otomatis mengikuti lebar layar (termasuk monitor lebar) sehingga tidak pernah ada ruang kosong di ujungnya; dihitung ulang saat jendela diubah ukurannya.
 - **Footer seimbang:** sisi kanan (Hak Cipta) kini 3 baris dengan gaya yang sama dengan sisi kiri (credit).
+
+## K. Pembaruan v1.7
+- **Footer sejajar:** tepi kanan tautan navigasi, garis pemisah, dan blok Hak Cipta kini lurus di satu batas. Tombol ke atas tidak lagi menutupi teks: saat footer terlihat, tombol otomatis naik dan berhenti di atas garis pemisah.
